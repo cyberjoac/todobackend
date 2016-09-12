@@ -23,22 +23,20 @@ test:
   links:
     - nginx
   environment:
-      URL: http://nginx:8000/todos
-      JUNIT_REPORT_PATH: /reports/acceptance.xml
-      JUNIT_REPORT_STACK: 1
+    URL: http://nginx:8000/todos
+    JUNIT_REPORT_PATH: /reports/acceptance.xml
+    JUNIT_REPORT_STACK: 1
   command: --reporter mocha-jenkins-reporter
 
 nginx:
-  image: nginx
+  build: .
+  dockerfile: Dockerfile.nginx
   links:
     - app
-  volumes:
-    - ./todobackend.conf:/etc/nginx/conf.d/todobackend.conf
   ports:
     - "8000:8000"
   volumes_from:
     - webroot
-
 
 webroot:
   build: ../../

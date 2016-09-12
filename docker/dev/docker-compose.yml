@@ -15,22 +15,19 @@ test:
 builder:
   build: ../../
   dockerfile: docker/dev/Dockerfile
-  volumes:
-      - ../../target:/wheelhouse
   volumes_from:
-      - cache
+    - cache
   entrypoint: "entrypoint.sh"
   command: ["pip", "wheel", "--no-index", "-f /build", "."]
 
 agent:
   image: jhagege/ansible
-  volumes:
-    - ../../../docker-ansible/ansible/probe.yml:/ansible/site.yml
   links:
     - db
   environment:
     PROBE_HOST: "db"
     PROBE_PORT: "3306"
+  command: ["probe.yml"]
 
 db:
   image: mysql:5.6
